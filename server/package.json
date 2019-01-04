@@ -1,0 +1,9 @@
+{
+  "name": "timesheet_server",
+  "version": "1.0.0",
+  "description": "Server to manage daily work schedule timesheet",
+  "main": "server.js",
+  "repository": "https://github.com/jana-uoft/timesheet",
+  "author": "Jana Rajakumar",
+  "license": "MIT"
+}

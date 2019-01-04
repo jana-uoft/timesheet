@@ -1,0 +1,9 @@
+{
+  "name": "timesheet_client",
+  "version": "1.0",
+  "description": "App to manage daily work schedule timesheet",
+  "main": "index.js",
+  "repository": "https://github.com/jana-uoft/timesheet",
+  "author": "Jana Rajakumar",
+  "license": "MIT"
+}

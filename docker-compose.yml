@@ -1,0 +1,55 @@
+version: '3.3'
+
+services:
+
+  client:
+    image: node:10-alpine
+    container_name: timnesheet-client
+    ports:
+      - 127.0.0.1:3000:3000
+    working_dir: /app
+    volumes:
+      - ./client/:/app
+    env_file:
+      - .env
+    user: 1000:1000
+    command: sh -c "yarn && yarn start"
+    depends_on:
+      - server
+    networks:
+      - timnesheet
+    links:
+      - server
+
+  server:
+    image: node:10-alpine
+    container_name: timnesheet-server
+    ports:
+      - 127.0.0.1:3001:3001
+    working_dir: /app
+    volumes:
+      - ./server/:/app
+    env_file:
+      - .env
+    user: 1000:1000
+    command: sh -c "yarn && yarn start"
+    networks:
+      - timnesheet
+
+  database:
+    image: mongo-express
+    container_name: timesheet-mongo
+    ports:
+      - 127.0.0.1:3002:8081
+    env_file:
+      - .env
+    environment:
+     - ME_CONFIG_MONGODB_ENABLE_ADMIN=false
+     - ME_CONFIG_MONGODB_SERVER=${MONGODB_SERVER}
+     - ME_CONFIG_MONGODB_PORT=${MONGODB_PORT}
+     - ME_CONFIG_MONGODB_AUTH_DATABASE=${MONGODB_DATABASE}
+     - ME_CONFIG_MONGODB_AUTH_USERNAME=${MONGODB_USER}
+     - ME_CONFIG_MONGODB_AUTH_PASSWORD=${MONGODB_PASS}
+
+networks:
+  timnesheet:
