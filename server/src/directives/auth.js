@@ -7,9 +7,9 @@ class AuthDirective extends SchemaDirectiveVisitor {
   visitFieldDefinition (field) {
     const { resolve = defaultFieldResolver } = field
     field.resolve = async function (...args) {
-      let [ , , context ] = args
-      const { _id } = await isAuthenticated(context.req)
-      context.authUser = await User.findById({ _id })
+      let [ , , { req } ] = args
+      const { _id } = await isAuthenticated(req)
+      req.authUser = await User.findById({ _id })
       return resolve.apply(this, args)
     }
   }
