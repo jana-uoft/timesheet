@@ -26,7 +26,7 @@ export default {
       newUser.username = username
       newUser.name = name
       newUser.password = password
-      newUser.token = await createToken(newUser, '15m')
+      newUser.token = await createToken(newUser)
       return newUser.save()
     },
     login: async (parent, args, context, info) => {
@@ -43,7 +43,7 @@ export default {
       if (isCurrentTokenValid) {
         return user
       } else {
-        user.token = await createToken(user, '15m')
+        user.token = await createToken(user)
         await user.updateOne({ token: user.token })
         return user
       }

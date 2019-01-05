@@ -2,7 +2,8 @@ import jwt from 'jsonwebtoken'
 import { AuthenticationError } from 'apollo-server-express'
 
 const {
-  JWT_SECRET
+  JWT_SECRET = 'shush',
+  JWT_EXPIRY = '15m'
 } = process.env
 
 export const isAuthenticated = async (req) => {
@@ -15,9 +16,9 @@ export const isAuthenticated = async (req) => {
   }
 }
 
-export const createToken = async (user, expiresIn) => {
+export const createToken = async (user) => {
   const { _id } = user
-  return jwt.sign({ _id }, JWT_SECRET, { expiresIn })
+  return jwt.sign({ _id }, JWT_SECRET, { expiresIn: JWT_EXPIRY })
 }
 
 export const isTokenValid = async (token) => {
