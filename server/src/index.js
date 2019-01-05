@@ -4,7 +4,7 @@ import morgan from 'morgan'
 import { ApolloServer } from 'apollo-server-express'
 import resolvers from './resolvers'
 import typeDefs from './typeDefs'
-import { getAuthUser } from './helpers/auth'
+import schemaDirectives from './directives';
 
 (async () => {
   try {
@@ -15,8 +15,7 @@ import { getAuthUser } from './helpers/auth'
       MONGODB_PORT,
       MONGODB_DATABASE,
       MONGODB_USER,
-      MONGODB_PASS,
-      JWT_SECRET
+      MONGODB_PASS
     } = process.env
 
     await mongoose.connect(
@@ -34,16 +33,9 @@ import { getAuthUser } from './helpers/auth'
     const server = new ApolloServer({
       typeDefs,
       resolvers,
+      schemaDirectives,
       playground: NODE_ENV === 'development',
-      context: async ({ req, res }) => {
-        if (req) {
-          const authUser = await getAuthUser(req, JWT_SECRET)
-          return {
-            authUser,
-            secret: JWT_SECRET
-          }
-        }
-      }
+      context: ({ req, res }) => ({ req, res })
     })
 
     server.applyMiddleware({ app })
