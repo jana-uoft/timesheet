@@ -10,8 +10,6 @@ services:
     working_dir: /app
     volumes:
       - ./client/:/app
-    env_file:
-      - .env
     user: 1000:1000
     command: sh -c "yarn && yarn start"
     depends_on:
